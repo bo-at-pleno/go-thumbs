@@ -7,7 +7,7 @@ BUILD_DATE ?= $(shell date +%FT%T%z)
 LDFLAGS += -s -w
 # inject build info
 LDFLAGS += -X ${PROJECT_PKG}/internal/app/build.Version=${VERSION} -X ${PROJECT_PKG}/internal/app/build.CommitHash=${COMMIT_HASH} -X ${PROJECT_PKG}/internal/app/build.BuildDate=${BUILD_DATE}
-export GOPATH := $(shell go env GOPATH)
+GOPATH ?= $(shell go env GOPATH)
 
 debug-makefile:
 	@echo $(LDFLAGS)
@@ -41,7 +41,7 @@ proto:
 	protoc --go_out=plugins=grpc:. internal/grpc/schema/*.proto
 
 install-tools:
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.33.0
-	go get github.com/google/wire/cmd/wire
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ${GOPATH}/bin v1.33.0
+	go install github.com/google/wire/cmd/wire@latest
 	go get -u github.com/onsi/ginkgo/ginkgo
 	go get -u github.com/swaggo/swag/cmd/swag
