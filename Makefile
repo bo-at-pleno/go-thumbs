@@ -7,6 +7,11 @@ BUILD_DATE ?= $(shell date +%FT%T%z)
 LDFLAGS += -s -w
 # inject build info
 LDFLAGS += -X ${PROJECT_PKG}/internal/app/build.Version=${VERSION} -X ${PROJECT_PKG}/internal/app/build.CommitHash=${COMMIT_HASH} -X ${PROJECT_PKG}/internal/app/build.BuildDate=${BUILD_DATE}
+export GOPATH := $(shell go env GOPATH)
+
+debug-makefile:
+	@echo $(LDFLAGS)
+	@echo $(shell go env GOPATH)
 
 start-docker-compose-test:
 	docker-compose -f docker-compose-test.yml up -d
@@ -19,7 +24,7 @@ test-all:
 	go test -v ./...
 	${MAKE} stop-docker-compose-test
 
-.PHONY: build
+.PHONY: build debug-makefile
 build:
 	go build ${GOARGS} -tags "${GOTAGS}" -ldflags "${LDFLAGS}" -o ${BUILD_DIR}/app ./cmd/app
 
