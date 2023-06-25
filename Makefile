@@ -28,6 +28,9 @@ test-all:
 build:
 	go build ${GOARGS} -tags "${GOTAGS}" -ldflags "${LDFLAGS}" -o ${BUILD_DIR}/app ./cmd/app
 
+run:
+	go run ./cmd/app
+
 gen:
 	go generate ./...
 
@@ -45,3 +48,4 @@ install-tools:
 	go install github.com/google/wire/cmd/wire@latest
 	go install github.com/swaggo/swag/cmd/swag@latest
 	go install github.com/onsi/ginkgo/v2/ginkgo
+	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
