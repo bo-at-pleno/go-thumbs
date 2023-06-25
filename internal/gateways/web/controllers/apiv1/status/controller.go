@@ -1,10 +1,10 @@
 package status
 
 import (
+	"github.com/bo-at-pleno/go-thumbs/internal/app/build"
+	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1"
+	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/render"
 	"github.com/gin-gonic/gin"
-	"github.com/wajox/gobase/internal/app/build"
-	"github.com/wajox/gobase/internal/gateways/web/controllers/apiv1"
-	"github.com/wajox/gobase/internal/gateways/web/render"
 
 	"net/http"
 )

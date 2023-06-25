@@ -4,13 +4,13 @@ import (
 	"net/http"
 	"net/http/httptest"
 
+	"github.com/bo-at-pleno/go-thumbs/internal/app/build"
 	"github.com/gin-gonic/gin"
-	"github.com/wajox/gobase/internal/app/build"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	. "github.com/wajox/gobase/internal/gateways/web/controllers/apiv1/status"
+	. "github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1/status"
 )
 
 var _ = Describe("Controller", func() {

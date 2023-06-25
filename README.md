@@ -1,8 +1,8 @@
 # GoBase
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Go Report Card](https://goreportcard.com/badge/github.com/wajox/gobase)](https://goreportcard.com/report/github.com/wajox/gobase)
-[![Go Reference](https://pkg.go.dev/badge/github.com/wajox/gobase.svg)](https://pkg.go.dev/github.com/wajox/gobase)
+[![Go Report Card](https://goreportcard.com/badge/github.com/bo-at-pleno/go-thumbs)](https://goreportcard.com/report/github.com/bo-at-pleno/go-thumbs)
+[![Go Reference](https://pkg.go.dev/badge/github.com/bo-at-pleno/go-thumbs.svg)](https://pkg.go.dev/github.com/bo-at-pleno/go-thumbs)
 [![codecov](https://codecov.io/gh/wajox/gobase/branch/master/graph/badge.svg?token=0K79C2LH2K)](https://codecov.io/gh/wajox/gobase)
 [![Build Status](https://travis-ci.org/wajox/gobase.svg?branch=master)](https://travis-ci.org/wajox/gobase)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
@@ -11,8 +11,8 @@ This is a simple skeleton for golang application. Inspired by development experi
 
 ## How to use?
 
-1. Clone the repository (with git client `git clone github.com/wajox/gobase [project_name]` or use it as template on github for creating a new project)
-2. replace `github.com/wajox/gobase` with `[your_pkg_name]` in the all files
+1. Clone the repository (with git client `git clone github.com/bo-at-pleno/go-thumbs [project_name]` or use it as template on github for creating a new project)
+2. replace `github.com/bo-at-pleno/go-thumbs` with `[your_pkg_name]` in the all files
 
 ## Structure
 

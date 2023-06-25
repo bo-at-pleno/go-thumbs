@@ -4,7 +4,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	. "github.com/wajox/gobase/internal/app/initializers"
+	. "github.com/bo-at-pleno/go-thumbs/internal/app/initializers"
 )
 
 var _ = Describe("Logs", func() {

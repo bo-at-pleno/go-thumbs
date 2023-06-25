@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 
+	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1"
 	"github.com/gin-gonic/gin"
-	"github.com/wajox/gobase/internal/gateways/web/controllers/apiv1"
 )
 
 // NewTestHTTPRequest is a HTTP request builder for testing purposes

@@ -1,7 +1,7 @@
 package initializers
 
 import (
-	"github.com/wajox/gobase/internal/app/build"
+	"github.com/bo-at-pleno/go-thumbs/internal/app/build"
 )
 
 // InitializeBuildInfo creates new build.Info

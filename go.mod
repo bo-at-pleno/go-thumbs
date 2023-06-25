@@ -1,4 +1,4 @@
-module github.com/wajox/gobase
+module github.com/bo-at-pleno/go-thumbs
 
 go 1.17
 

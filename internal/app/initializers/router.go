@@ -1,12 +1,12 @@
 package initializers
 
 import (
+	"github.com/bo-at-pleno/go-thumbs/internal/app/dependencies"
+	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1"
+	apiv1Status "github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1/status"
+	apiv1Swagger "github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1/swagger"
+	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/router"
 	"github.com/gin-gonic/gin"
-	"github.com/wajox/gobase/internal/app/dependencies"
-	"github.com/wajox/gobase/internal/gateways/web/controllers/apiv1"
-	apiv1Status "github.com/wajox/gobase/internal/gateways/web/controllers/apiv1/status"
-	apiv1Swagger "github.com/wajox/gobase/internal/gateways/web/controllers/apiv1/swagger"
-	"github.com/wajox/gobase/internal/gateways/web/router"
 )
 
 // InitializeRouter initializes new gin router

@@ -21,7 +21,7 @@ RUN mkdir -p ~/.ssh/ &&\
     git config --global url."git@github.com:".insteadOf "https://github.com/"
 
 ### copying project files
-WORKDIR /go/src/github.com/wajox/gobase
+WORKDIR /go/src/github.com/bo-at-pleno/go-thumbs
 # copy gomod 
 COPY go.mod go.sum ./
 # Get dependancies. Also will be cached if we won't change mod/sum
@@ -42,9 +42,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repos
 RUN mkdir -p ./api
 RUN mkdir -p ./db/migrations
 
-COPY --from=builder /go/src/github.com/wajox/gobase/api ./api
-COPY --from=builder /go/src/github.com/wajox/gobase/db/migrations ./db/migrations
+COPY --from=builder /go/src/github.com/bo-at-pleno/go-thumbs/api ./api
+COPY --from=builder /go/src/github.com/bo-at-pleno/go-thumbs/db/migrations ./db/migrations
 
-COPY --from=builder /go/src/github.com/wajox/gobase/build/app .
+COPY --from=builder /go/src/github.com/bo-at-pleno/go-thumbs/build/app .
 
 CMD ["./app", "s"]

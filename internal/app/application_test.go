@@ -6,7 +6,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	. "github.com/wajox/gobase/internal/app"
+	. "github.com/bo-at-pleno/go-thumbs/internal/app"
 )
 
 var _ = Describe("Application", func() {

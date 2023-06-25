@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/wajox/gobase/internal/app/cli"
+	"github.com/bo-at-pleno/go-thumbs/internal/app/cli"
 )
 
 func main() {

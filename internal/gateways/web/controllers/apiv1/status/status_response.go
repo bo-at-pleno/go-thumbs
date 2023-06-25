@@ -1,7 +1,7 @@
 package status
 
 import (
-	"github.com/wajox/gobase/internal/app/build"
+	"github.com/bo-at-pleno/go-thumbs/internal/app/build"
 )
 
 // Response is a declaration for a status response

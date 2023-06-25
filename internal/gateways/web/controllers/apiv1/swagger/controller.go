@@ -6,8 +6,8 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 
 	//nolint: golint //reason: blank import because of swagger docs init
-	_ "github.com/wajox/gobase/api/web"
-	"github.com/wajox/gobase/internal/gateways/web/controllers/apiv1"
+	_ "github.com/bo-at-pleno/go-thumbs/api/web"
+	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1"
 )
 
 var (

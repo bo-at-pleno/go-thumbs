@@ -4,9 +4,9 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/bo-at-pleno/go-thumbs/internal/app/dependencies"
+	"github.com/bo-at-pleno/go-thumbs/internal/app/initializers"
 	"github.com/rs/zerolog/log"
-	"github.com/wajox/gobase/internal/app/dependencies"
-	"github.com/wajox/gobase/internal/app/initializers"
 )
 
 // Application is a main struct for the application that contains general information

@@ -1,11 +1,12 @@
-//+build wireinject
+//go:build wireinject
+// +build wireinject
 
 package app
 
 import (
+	"github.com/bo-at-pleno/go-thumbs/internal/app/dependencies"
+	"github.com/bo-at-pleno/go-thumbs/internal/app/initializers"
 	"github.com/google/wire"
-	"github.com/wajox/gobase/internal/app/dependencies"
-	"github.com/wajox/gobase/internal/app/initializers"
 )
 
 func BuildApplication() (*Application, error) {
