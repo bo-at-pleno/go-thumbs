@@ -21,6 +21,7 @@ func NewServeCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			log.Info().Msg("Starting")
 
+			// Handle SIGINT and SIGTERM.
 			sigchan := make(chan os.Signal, 1)
 			signal.Notify(sigchan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 

@@ -1,14 +1,11 @@
 package initializers_test
 
 import (
-	"github.com/gin-gonic/gin"
-
+	. "github.com/bo-at-pleno/go-thumbs/internal/app/initializers"
 	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/router"
-
+	"github.com/gin-gonic/gin"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-
-	. "github.com/bo-at-pleno/go-thumbs/internal/app/initializers"
 )
 
 var _ = Describe("HttpServer", func() {
