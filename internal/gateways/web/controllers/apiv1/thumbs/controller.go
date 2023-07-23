@@ -1,6 +1,8 @@
 package status
 
 import (
+	"os"
+
 	"github.com/bo-at-pleno/go-thumbs/internal/app/build"
 	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1"
 	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/render"
@@ -33,15 +35,33 @@ func NewController(bi *build.Info) *Controller {
 // @Accept json
 // @Produce json
 // @Success 200 {object} ResponseDoc
-// @Router /api/v1/status [get]
+// @Router /api/v1/thumbs [get]
 func (ctrl *Controller) GetThumbnail(ctx *gin.Context) {
+	TiffPath := ctx.Param("tiffPath")
+
+	// if file does not exist or is not tiff, return error
+	if TiffPath == "" || TiffPath[len(TiffPath)-4:] != "tiff" {
+		render.NotFoundError(ctx, "File not found")
+		return
+	}
+
+	_, err := os.Stat(TiffPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			render.NotFoundError(ctx, "File not found")
+		}
+	}
+
+	// if file exists, but thumbnail does not, create thumbnail
 	render.JSONAPIPayload(ctx, http.StatusOK, &Response{
-		Status: http.StatusText(http.StatusOK),
-		Build:  ctrl.buildInfo,
+		Status:   http.StatusText(http.StatusOK),
+		Build:    ctrl.buildInfo,
+		TiffPath: TiffPath,
 	})
+
 }
 
 // DefineRoutes adds controller routes to the router
 func (ctrl *Controller) DefineRoutes(r gin.IRouter) {
-	r.GET("/api/v1/thumbnail", ctrl.GetThumbnail)
+	r.GET("/api/v1/thumbnail/:tiffPath", ctrl.GetThumbnail)
 }
