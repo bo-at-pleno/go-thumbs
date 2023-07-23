@@ -1,9 +1,11 @@
 package helpers
 
 import (
+	"bytes"
+	"encoding/base64"
 	"image"
 	"image/color"
-	"image/jpeg"
+	"image/png"
 	"os"
 
 	"golang.org/x/image/draw"
@@ -29,27 +31,25 @@ const (
 )
 
 // Thumbnail generates a thumbnail of the input image based on the provided options.
-func Thumbnail(img image.Image, options ThumbnailOptions) image.Image {
+func Thumbnail(img *image.Image, options ThumbnailOptions) *image.Image {
 	// Step 1: Resize the image using the specified interpolation method.
 	resizedImg := resizeImage(img, options.Width, options.Height, options.Interpolation)
-
 	// Step 2: Autocontrast the image based on the specified clipping percentiles.
 	autoContrastedImg := autoContrast(&resizedImg, options.LowerPercentile, options.UpperPercentile)
-
-	return autoContrastedImg
+	return &autoContrastedImg
 }
 
 // resizeImage resizes the input image using the specified interpolation method.
-func resizeImage(img image.Image, width, height int, interpolation InterpolationMethod) image.Image {
+func resizeImage(img *image.Image, width, height int, interpolation InterpolationMethod) image.Image {
 	// Create a new destination image with the specified width and height.
 	dst := image.NewRGBA(image.Rect(0, 0, width, height))
 
 	if interpolation == NearestNeighbor {
-		draw.NearestNeighbor.Scale(dst, dst.Bounds(), img, img.Bounds(), draw.Over, nil)
+		draw.NearestNeighbor.Scale(dst, dst.Bounds(), *img, (*img).Bounds(), draw.Over, nil)
 	} else if interpolation == Bilinear {
-		draw.BiLinear.Scale(dst, dst.Bounds(), img, img.Bounds(), draw.Over, nil)
+		draw.BiLinear.Scale(dst, dst.Bounds(), *img, (*img).Bounds(), draw.Over, nil)
 	} else {
-		draw.CatmullRom.Scale(dst, dst.Bounds(), img, img.Bounds(), draw.Over, nil)
+		draw.CatmullRom.Scale(dst, dst.Bounds(), *img, (*img).Bounds(), draw.Over, nil)
 	}
 	return dst
 }
@@ -127,15 +127,15 @@ func ReadTiff(tiffPath string) (*image.Image, error) {
 	return &tiffImage, nil
 }
 
-func saveThumbnail(thumbnail *image.Image, path string) error {
-	// Save the thumbnail to a file.
-	thumbnailFile, err := os.Create(path)
+func ImageToBase64(img image.Image) (string, error) {
+	// Convert the image to a byte slice.
+	buffer := new(bytes.Buffer)
+	err := png.Encode(buffer, img)
 	if err != nil {
-		return err
+		return "", err
 	}
-	defer thumbnailFile.Close()
 
-	options := &jpeg.Options{Quality: 75}
-	err = jpeg.Encode(thumbnailFile, *thumbnail, options)
-	return err
+	// Encode the byte slice as a base64 string.
+	encodedString := base64.StdEncoding.EncodeToString(buffer.Bytes())
+	return encodedString, nil
 }

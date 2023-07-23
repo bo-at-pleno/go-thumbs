@@ -11,3 +11,9 @@ type Response struct {
 	Build    *build.Info `jsonapi:"attr,build"`
 	TiffPath string      `jsonapi:"attr,tiff_path"`
 }
+
+type ThumbnailResponse struct {
+	ID              string `jsonapi:"primary,status"`
+	TiffPath        string `jsonapi:"attr,tiff_path"`
+	ThumbnailBase64 string `jsonapi:"attr,thumbnail"`
+}
