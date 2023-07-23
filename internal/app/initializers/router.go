@@ -5,6 +5,7 @@ import (
 	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1"
 	apiv1Status "github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1/status"
 	apiv1Swagger "github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1/swagger"
+	apiv1Thumbs "github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1/thumbs"
 	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/router"
 	"github.com/gin-gonic/gin"
 )
@@ -25,6 +26,7 @@ func InitializeRouter(container *dependencies.Container) *gin.Engine {
 func buildControllers(container *dependencies.Container) []apiv1.Controller {
 	return []apiv1.Controller{
 		apiv1Status.NewController(container.BuildInfo),
+		apiv1Thumbs.NewController(container.BuildInfo),
 		apiv1Swagger.NewController(),
 	}
 }
