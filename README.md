@@ -1,4 +1,6 @@
-# GoBase
+# GoThumbs
+
+Thumbnail generator service written in Go
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Go Report Card](https://goreportcard.com/badge/github.com/bo-at-pleno/go-thumbs)](https://goreportcard.com/report/github.com/bo-at-pleno/go-thumbs)
