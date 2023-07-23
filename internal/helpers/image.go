@@ -34,7 +34,7 @@ func Thumbnail(img image.Image, options ThumbnailOptions) image.Image {
 	resizedImg := resizeImage(img, options.Width, options.Height, options.Interpolation)
 
 	// Step 2: Autocontrast the image based on the specified clipping percentiles.
-	autoContrastedImg := autoContrast(resizedImg, options.LowerPercentile, options.UpperPercentile)
+	autoContrastedImg := autoContrast(&resizedImg, options.LowerPercentile, options.UpperPercentile)
 
 	return autoContrastedImg
 }
@@ -55,14 +55,15 @@ func resizeImage(img image.Image, width, height int, interpolation Interpolation
 }
 
 // autoContrast applies autocontrast to the input image based on the specified clipping percentiles.
-func autoContrast(img image.Image, lowerPercentile, upperPercentile float64) image.Image {
+func autoContrast(img *image.Image, lowerPercentile, upperPercentile float64) image.Image {
 	// Calculate the histogram of the image.
 	histogram := make(map[uint8]int)
-	totalPixels := img.Bounds().Dx() * img.Bounds().Dy()
+	totalPixels := (*img).Bounds().Dx() * (*img).Bounds().Dy()
+	bounds := (*img).Bounds()
 
-	for y := img.Bounds().Min.Y; y < img.Bounds().Max.Y; y++ {
-		for x := img.Bounds().Min.X; x < img.Bounds().Max.X; x++ {
-			pixel := color.GrayModel.Convert(img.At(x, y)).(color.Gray)
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			pixel := color.GrayModel.Convert((*img).At(x, y)).(color.Gray)
 			histogram[pixel.Y]++
 		}
 	}
@@ -96,11 +97,10 @@ func autoContrast(img image.Image, lowerPercentile, upperPercentile float64) ima
 	}
 
 	// Perform the linear contrast stretch.
-	bounds := img.Bounds()
 	stretchedImg := image.NewGray(bounds)
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			pixel := color.GrayModel.Convert(img.At(x, y)).(color.Gray)
+			pixel := color.GrayModel.Convert((*img).At(x, y)).(color.Gray)
 			intensity := pixel.Y
 			newIntensity := uint8(float64(intensity-minIntensity) / float64(maxIntensity-minIntensity) * 255)
 			stretchedImg.SetGray(x, y, color.Gray{Y: newIntensity})
@@ -127,7 +127,7 @@ func ReadTiff(tiffPath string) (*image.Image, error) {
 	return &tiffImage, nil
 }
 
-func SaveThumbnail(thumbnail *image.Image, path string) error {
+func saveThumbnail(thumbnail *image.Image, path string) error {
 	// Save the thumbnail to a file.
 	thumbnailFile, err := os.Create(path)
 	if err != nil {
