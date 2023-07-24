@@ -1,16 +1,17 @@
 package status
 
 import (
+	"bytes"
 	"fmt"
+	"image/jpeg"
 	"os"
+	"strconv"
 
 	"github.com/bo-at-pleno/go-thumbs/internal/app/build"
 	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/controllers/apiv1"
 	"github.com/bo-at-pleno/go-thumbs/internal/gateways/web/render"
 	"github.com/bo-at-pleno/go-thumbs/internal/helpers"
 	"github.com/gin-gonic/gin"
-
-	"net/http"
 )
 
 var (
@@ -30,7 +31,7 @@ func NewController(bi *build.Info) *Controller {
 	}
 }
 
-// GetStatus godoc
+// GetThumbnail godoc
 // @Summary Get Thumbnail for a given image
 // @Description get status
 // @ID get-status
@@ -50,7 +51,8 @@ func (ctrl *Controller) GetThumbnail(ctx *gin.Context) {
 	_, err := os.Stat(tiffPath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			render.NotFoundError(ctx, "File not found")
+			render.NotFoundError(ctx, fmt.Sprintf("File path provided does not exist: %s", tiffPath))
+			return
 		}
 	}
 
@@ -58,6 +60,7 @@ func (ctrl *Controller) GetThumbnail(ctx *gin.Context) {
 	if err != nil {
 		notFoundErr := fmt.Sprintf("Not a tiff file: %s", err)
 		render.NotFoundError(ctx, notFoundErr)
+		return
 	}
 
 	thumbs := helpers.Thumbnail(img, helpers.ThumbnailOptions{
@@ -68,21 +71,46 @@ func (ctrl *Controller) GetThumbnail(ctx *gin.Context) {
 		UpperPercentile: 99,
 	})
 
-	// return thumbs as base64 encoded string
-	data, err := helpers.ImageToBase64(*thumbs)
+	buf := bytes.NewBuffer(nil)
+	// Encode the image to JPEG format.
+	err = jpeg.Encode(buf, *thumbs, nil)
 	if err != nil {
-		render.InternalServerError(ctx, err.Error())
+		render.NotFoundError(ctx, fmt.Sprintf("Error encoding thumbnail: %s", err))
+		return
+	}
+	// Render the thumbnail
+	render.ImageResult(ctx, 200, buf.Bytes(), "jpeg")
+}
+
+// GetThumbnailWithDimensions gets a thumbnail of the specified tiff file with the specified width and height
+func (ctrl *Controller) GetThumbnailWithDimensions(ctx *gin.Context) {
+	tiffPath := ctx.Param("tiffPath")
+	width := ctx.Query("width")
+	height := ctx.Query("height")
+
+	// Get the thumbnail
+	buf := bytes.NewBuffer(nil)
+	w, _ := strconv.ParseInt(width, 10, 0)
+	h, _ := strconv.ParseInt(height, 10, 0)
+
+	img, err := helpers.TiffToThumbnail(tiffPath, int(w), int(h))
+	if err != nil {
+		render.NotFoundError(ctx, fmt.Sprintf("Error getting thumbnail: %s", err))
+		return
 	}
 
-	// if file exists, but thumbnail does not, create thumbnail
-	render.JSONAPIPayload(ctx, http.StatusOK, &ThumbnailResponse{
-		ThumbnailBase64: data,
-		TiffPath:        tiffPath,
-	})
-
+	// Encode the image to JPEG format.
+	err = jpeg.Encode(buf, *img, nil)
+	if err != nil {
+		render.NotFoundError(ctx, fmt.Sprintf("Error encoding thumbnail: %s", err))
+		return
+	}
+	// Render the thumbnail
+	render.ImageResult(ctx, 200, buf.Bytes(), "jpeg")
 }
 
 // DefineRoutes adds controller routes to the router
 func (ctrl *Controller) DefineRoutes(r gin.IRouter) {
 	r.GET("/api/v1/thumbnail/:tiffPath", ctrl.GetThumbnail)
+	r.GET("/api/v1/thumbnail/:tiffPath/:width/:height", ctrl.GetThumbnailWithDimensions)
 }

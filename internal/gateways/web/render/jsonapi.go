@@ -60,3 +60,10 @@ func Errors(ctx *gin.Context, statusCode int, errs []*jsonapi.ErrorObject) {
 		return
 	}
 }
+
+// ImageResult renders image result as a response
+func ImageResult(ctx *gin.Context, statusCode int, payload []byte, format string) {
+	ctx.Header(ContentTypeHeader, "image/"+format)
+	ctx.Status(statusCode)
+	ctx.Writer.Write(payload)
+}

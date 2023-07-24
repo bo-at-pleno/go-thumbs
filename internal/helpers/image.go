@@ -1,11 +1,8 @@
 package helpers
 
 import (
-	"bytes"
-	"encoding/base64"
 	"image"
 	"image/color"
-	"image/png"
 	"os"
 
 	"golang.org/x/image/draw"
@@ -127,15 +124,19 @@ func ReadTiff(tiffPath string) (*image.Image, error) {
 	return &tiffImage, nil
 }
 
-func ImageToBase64(img image.Image) (string, error) {
-	// Convert the image to a byte slice.
-	buffer := new(bytes.Buffer)
-	err := png.Encode(buffer, img)
+func TiffToThumbnail(tiffPath string, width int, height int) (*image.Image, error) {
+	img, err := ReadTiff(tiffPath)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	// Encode the byte slice as a base64 string.
-	encodedString := base64.StdEncoding.EncodeToString(buffer.Bytes())
-	return encodedString, nil
+	thumbs := Thumbnail(img, ThumbnailOptions{
+		Width:           width,
+		Height:          height,
+		Interpolation:   Bilinear,
+		LowerPercentile: 1,
+		UpperPercentile: 99,
+	})
+
+	return thumbs, nil
 }
